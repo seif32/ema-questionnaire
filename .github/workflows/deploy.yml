@@ -117,7 +117,7 @@ jobs:
           docker rm survey_frontend || true &&
           docker run -d \
             --name survey_frontend \
-            --network ema-questionnaire_survey_network \
+            --network survey_network \
             -p 8080:80 \
             --restart unless-stopped \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest &&
