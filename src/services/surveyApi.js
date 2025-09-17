@@ -1,5 +1,5 @@
 const surveyApi = {
-  baseUrl: "http://localhost:3000",
+  baseUrl: "http://102.218.215.254:3030",
 
   // 📋 QUESTIONS ENDPOINTS
   // GET /questions - Get all questions with their choices
