@@ -111,16 +111,26 @@ jobs:
     - name: Deploy Frontend to Server
       run: |
         ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} '
+          # Create deployment directory if it does not exist
+          mkdir -p ${{ env.DEPLOYMENT_PATH }} &&
           cd ${{ env.DEPLOYMENT_PATH }} &&
+          
+          # Pull latest image
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest &&
-          docker stop survey_frontend || true &&
-          docker rm survey_frontend || true &&
+          
+          # Force stop and remove existing container
+          docker stop survey_frontend 2>/dev/null || true &&
+          docker rm survey_frontend 2>/dev/null || true &&
+          
+          # Start new frontend container
           docker run -d \
             --name survey_frontend \
             --network survey-app_survey_network \
             -p 8080:80 \
             --restart unless-stopped \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest &&
+          
+          # Clean up old images
           docker image prune -f
         '
 
