@@ -175,7 +175,7 @@ jobs:
           # Start new frontend container (assumes backend network exists)
           docker run -d \
             --name survey_frontend \
-            --network ema-questionnaire_survey_network \
+            --network survey-app_survey_network \
             -p 8080:80 \
             --restart unless-stopped \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest &&
