@@ -52,6 +52,7 @@ jobs:
         secrets: |
           secret/data/survey-app VITE_API_BASE_URL | VITE_API_BASE_URL
 
+          
     - name: Setup Docker Buildx
       uses: docker/setup-buildx-action@v3
 
