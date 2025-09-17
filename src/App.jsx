@@ -461,18 +461,46 @@ function ActionButtons() {
 
     if (validation.isComplete) {
       const finalAnswers = Object.entries(answers).flatMap(([key, value]) => {
+        console.log("value", value);
+
+        // 🎯 Special handling for question 10
+        const questionId = parseInt(key);
+        const isQuestion10 = questionId === 10;
+
         if (Array.isArray(value)) {
-          return value.map((v) => ({
-            question_id: key,
-            answer_text: v.choiceText,
-            ...(v.otherText && { written_answer: v.otherText }),
-          }));
+          return value.map((v) => {
+            if (isQuestion10) {
+              // For question 10 (multi-choice), put the answer in written_answer
+              return {
+                question_id: key,
+                written_answer: v.choiceText,
+                ...(v.otherText && { answer_text: v.otherText }),
+              };
+            } else {
+              // Normal behavior for other questions
+              return {
+                question_id: key,
+                answer_text: v.choiceText,
+                ...(v.otherText && { written_answer: v.otherText }),
+              };
+            }
+          });
         } else {
-          return {
-            question_id: key,
-            answer_text: value.choiceText || value,
-            ...(value.otherText && { written_answer: value.otherText }),
-          };
+          if (isQuestion10) {
+            // For question 10 (single choice or text), put the answer in written_answer
+            return {
+              question_id: key,
+              written_answer: value.choiceText || value,
+              ...(value.otherText && { answer_text: value.otherText }),
+            };
+          } else {
+            // Normal behavior for other questions
+            return {
+              question_id: key,
+              answer_text: value.choiceText || value,
+              ...(value.otherText && { written_answer: value.otherText }),
+            };
+          }
         }
       });
 
@@ -482,13 +510,12 @@ function ActionButtons() {
       createResponse(data, {
         onSuccess: () => {
           setIsSubmitSurvey(true);
-        },
-      });
-
-      toast.success("Survey Completed!", {
-        description: "All questions answered successfully! 🎉",
-        action: {
-          onClick: () => console.log("View results clicked"),
+          toast.success("Survey Completed!", {
+            description: "All questions answered successfully! 🎉",
+            action: {
+              onClick: () => console.log("View results clicked"),
+            },
+          });
         },
       });
     } else {

@@ -1,26 +1,17 @@
 {
-  "user_name": "Seif Mohamed",
+  "user_name": "Seif",
   "answers": [
     {
       "question_id": "1",
-      "answer_text": "Other :",
-      "written_answer": "Mwazaf"
+      "answer_text": "Individual User"
     },
     {
       "question_id": "2",
-      "answer_text": "Retail / Trade"
+      "answer_text": "Farming / Agro-business"
     },
     {
       "question_id": "3",
-      "answer_text": "Monthly"
-    },
-    {
-      "question_id": "4",
-      "answer_text": "eMaFunding (crowdfunding)"
-    },
-    {
-      "question_id": "4",
-      "answer_text": "eMaMall (online shop)"
+      "answer_text": "Daily"
     },
     {
       "question_id": "4",
@@ -28,32 +19,27 @@
     },
     {
       "question_id": "4",
-      "answer_text": "Other:",
-      "written_answer": "msh faker"
+      "answer_text": "eMaMall (online shop)"
+    },
+    {
+      "question_id": "4",
+      "answer_text": "eMaFunding (crowdfunding)"
     },
     {
       "question_id": "5",
-      "answer_text": "Lack of trust / security concerns"
+      "answer_text": "I don’t see products/services relevant to me"
     },
     {
       "question_id": "6",
-      "answer_text": "Language barriers"
-    },
-    {
-      "question_id": "7",
-      "answer_text": "More training on how to use it for business"
+      "answer_text": "Lack of training or support"
     },
     {
       "question_id": "7",
       "answer_text": "More customers available on the platform"
     },
     {
-      "question_id": "7",
-      "answer_text": "Easier access to loans or funding"
-    },
-    {
       "question_id": "8",
-      "answer_text": "Easier cross-border trade tools"
+      "answer_text": "Training videos / mentorship"
     },
     {
       "question_id": "9",
@@ -61,7 +47,7 @@
     },
     {
       "question_id": "10",
-      "answer_text": "Gamed"
+      "written_answer": "Gamed"
     }
   ]
 }
