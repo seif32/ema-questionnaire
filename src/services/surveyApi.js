@@ -1,5 +1,5 @@
 const surveyApi = {
-  baseUrl: "http://102.218.215.254:3030",
+  baseUrl: import.meta.env.VITE_API_BASE_URL || "http://localhost:3030",
 
   // 📋 QUESTIONS ENDPOINTS
   // GET /questions - Get all questions with their choices

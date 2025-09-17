@@ -1,0 +1,32 @@
+# Development overrides for docker-compose
+# This file is automatically loaded by docker-compose for local development
+
+services:
+  # Frontend development overrides
+  frontend:
+    build:
+      args:
+        - VITE_API_BASE_URL=http://localhost:3030  # For development, use localhost
+    ports:
+      - "3001:80"  # Use port 3001 for frontend in development to avoid conflict
+    volumes:
+      # Mount source code for development (uncomment for hot reload development)
+      # - ./src:/app/src
+      # - ./public:/app/public
+      - /app/node_modules  # Prevent overwriting node_modules
+    environment:
+      - NODE_ENV=development
+    
+  # Backend development overrides (if needed)
+  app:
+    environment:
+      - NODE_ENV=development
+      - DEBUG=true
+    
+  # Database development overrides
+  mysql:
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=survey_db
+      - MYSQL_USER=survey_user
+      - MYSQL_PASSWORD=survey_password

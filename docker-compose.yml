@@ -1,0 +1,76 @@
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: survey_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-survey_db}
+      MYSQL_USER: ${DB_USER:-survey_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-survey_password}
+    ports:
+      - "3333:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - survey_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Node.js Backend Application
+  app:
+    image: ${DOCKER_REGISTRY:-docker.io}/${IMAGE_NAME:-askerism/survey-backend}:${IMAGE_TAG:-latest}
+    container_name: survey_app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3030}:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_USER=${DB_USER:-survey_user}
+      - DB_PASSWORD=${DB_PASSWORD:-survey_password}
+      - DB_NAME=${DB_NAME:-survey_db}
+      - PORT=3000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - survey_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # React Frontend Application
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://app:3000
+    container_name: survey_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      - app
+    networks:
+      - survey_network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mysql_data:
+
+networks:
+  survey_network:

@@ -15,4 +15,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    host: '0.0.0.0', // Allow external connections for Docker
+    port: 3000,
+    watch: {
+      usePolling: true, // Better for Docker on some systems
+    },
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false, // Disable source maps in production for smaller bundle
+  },
 });
