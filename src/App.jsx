@@ -16,16 +16,32 @@ const queryClient = new QueryClient();
 function App() {
   const isBeginSurvey = useSurveyStore((state) => state.isBeginSurvey);
   const isSubmitSurvey = useSurveyStore((state) => state.isSubmitSurvey);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="min-h-screen grid place-items-center px-4 py-8">
-        {isBeginSurvey && !isSubmitSurvey ? (
-          <SurveyContainer />
-        ) : (
-          !isSubmitSurvey && <SetName />
-        )}
-        {isSubmitSurvey && <SuccessSubmitSurvey />}
-      </main>
+      <div className="min-h-screen bg-gray-50">
+        {/* Simple Header */}
+        <header className="bg-white border-b border-gray-200 py-4 sm:py-6">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
+              eMa Survey
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">
+              Help us improve by sharing your feedback
+            </p>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="min-h-[calc(100vh-100px)] grid place-items-center px-4 py-8">
+          {isBeginSurvey && !isSubmitSurvey ? (
+            <SurveyContainer />
+          ) : (
+            !isSubmitSurvey && <SetName />
+          )}
+          {isSubmitSurvey && <SuccessSubmitSurvey />}{" "}
+        </main>
+      </div>
       <Toaster position="top-center" />
     </QueryClientProvider>
   );
@@ -88,7 +104,7 @@ function SetName() {
     <div className="w-full max-w-sm sm:max-w-lg mx-auto space-y-4 sm:space-y-6 flex flex-col px-4">
       <div className="text-center sm:text-left">
         <h2 className="text-sm sm:text-base text-muted-foreground mb-2">
-          Hello our dear! 👋
+          Hello our dear!
         </h2>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
           Please write your name to begin the survey
@@ -107,7 +123,7 @@ function SetName() {
         className="w-full sm:w-auto sm:self-end px-8 py-3 text-base font-medium"
         onClick={() => setIsBeginSurvey(true)}
       >
-        Begin Survey ✨
+        Begin Survey
       </Button>
     </div>
   );
@@ -495,7 +511,7 @@ function ActionButtons() {
           onClick={handleSubmit}
           disabled={isCreating}
         >
-          {isCreating ? "Submitting..." : "Submit Survey 🎯"}
+          {isCreating ? "Submitting..." : "Submit Survey "}
         </Button>
       ) : (
         <Button
