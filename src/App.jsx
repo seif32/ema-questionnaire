@@ -1,5 +1,4 @@
 import { Button } from "./components/ui/button";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useSurveyStore } from "./store/surveyStore";
 import { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ function App() {
   const isSubmitSurvey = useSurveyStore((state) => state.isSubmitSurvey);
   return (
     <QueryClientProvider client={queryClient}>
-      <main className=" min-h-screen grid place-items-center">
+      <main className="min-h-screen grid place-items-center px-4 py-8">
         {isBeginSurvey && !isSubmitSurvey ? (
           <SurveyContainer />
         ) : (
@@ -36,12 +35,12 @@ export default App;
 
 function SuccessSubmitSurvey() {
   return (
-    <div className="max-w-md mx-auto text-center p-8 bg-white rounded-3xl shadow-lg border border-gray-100">
+    <div className="w-full max-w-sm sm:max-w-md mx-auto text-center p-6 sm:p-8 bg-white rounded-2xl sm:rounded-3xl shadow-lg border border-gray-100">
       {/* Success Icon */}
-      <div className="mb-6">
-        <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+      <div className="mb-4 sm:mb-6">
+        <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center">
           <svg
-            className="w-10 h-10 text-green-600"
+            className="w-8 h-8 sm:w-10 sm:h-10 text-green-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -57,24 +56,18 @@ function SuccessSubmitSurvey() {
       </div>
 
       {/* Success Message */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">Thank You! </h2>
-        <p className="text-gray-600 leading-relaxed">
+      <div className="mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
+          Thank You! 🙏
+        </h2>
+        <p className="text-sm sm:text-base text-gray-600 leading-relaxed px-2">
           Your survey has been submitted successfully. We appreciate you taking
           the time to share your valuable feedback with us.
         </p>
       </div>
 
-      {/* Action Button
-      <button
-        onClick={resetSurvey}
-        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-200"
-      >
-        Take Another Survey ✨
-      </button> */}
-
       {/* Optional: Additional Info */}
-      <p className="text-sm text-gray-500 mt-6">
+      <p className="text-xs sm:text-sm text-gray-500 mt-4 sm:mt-6 px-2">
         Your responses will help us improve our services
       </p>
     </div>
@@ -92,27 +85,29 @@ function SetName() {
     /^[a-zA-Z\s]+$/.test(userName);
 
   return (
-    <div className="space-y-3 flex flex-col">
-      {/* <div className="w-100 self-center justify-self-center">
-        <img
-          src={Smile}
-          alt="smile-face"
-          className="object-fill w-full h-full"
-        />
-      </div> */}
-      <div>
-        <h2 className="text-muted-foreground">Hello our dear!</h2>
-        <h1 className="text-4xl">
-          Please write your name, to begin the survey
+    <div className="w-full max-w-sm sm:max-w-lg mx-auto space-y-4 sm:space-y-6 flex flex-col px-4">
+      <div className="text-center sm:text-left">
+        <h2 className="text-sm sm:text-base text-muted-foreground mb-2">
+          Hello our dear! 👋
+        </h2>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+          Please write your name to begin the survey
         </h1>
       </div>
-      <Input value={userName} onChange={(e) => setUserName(e.target.value)} />
+
+      <Input
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
+        className="w-full text-base sm:text-lg p-3 sm:p-4"
+        placeholder="Enter your name here..."
+      />
+
       <Button
         disabled={!isValidName}
-        className={" self-end"}
+        className="w-full sm:w-auto sm:self-end px-8 py-3 text-base font-medium"
         onClick={() => setIsBeginSurvey(true)}
       >
-        Begin
+        Begin Survey ✨
       </Button>
     </div>
   );
@@ -135,24 +130,30 @@ function SurveyContainer() {
     }
   }, [questions, questionsLoading, setTotalSteps]);
 
-  if (questionsLoading) return <div>Loading . . .</div>;
+  if (questionsLoading)
+    return <div className="text-center text-lg">Loading . . .</div>;
   if (questionsError) {
-    return <div>Error loading questions: {questionsErrorDetails?.message}</div>;
+    return (
+      <div className="text-center text-red-600 p-4">
+        Error loading questions: {questionsErrorDetails?.message}
+      </div>
+    );
   }
   if (!questions || !Array.isArray(questions) || questions.length === 0) {
-    return <div>No questions available</div>;
+    return <div className="text-center p-4">No questions available</div>;
   }
   if (totalSteps === 0) {
-    return <div>Initializing survey...</div>;
+    return <div className="text-center p-4">Initializing survey...</div>;
   }
+
   const currentQuestion = questions[currentStep];
 
   if (!currentQuestion) {
-    return <div>Question not found</div>;
+    return <div className="text-center p-4">Question not found</div>;
   }
 
   return (
-    <div className="flex flex-col gap-y-4 max-w-150 py-20 ">
+    <div className="w-full max-w-2xl mx-auto flex flex-col gap-y-4 sm:gap-y-6 px-4 py-6 sm:py-8">
       <ProgressBar totalSteps={totalSteps} currentStep={currentStep} />
       <QuestionIndicator noOfQuestions={questions?.length} />
       <QuestionsContainer key={currentQuestion.id} question={currentQuestion} />
@@ -167,8 +168,8 @@ function ProgressBar({ totalSteps = 1, currentStep }) {
       {[...Array(totalSteps)].map((_, index) => (
         <div
           key={index}
-          className={`h-1 flex-1 rounded-full bg-gray-400 ${
-            currentStep >= index && "bg-green-400 transition-colors"
+          className={`h-1 sm:h-1.5 flex-1 rounded-full transition-colors duration-300 ${
+            currentStep >= index ? "bg-green-400" : "bg-gray-300"
           }`}
         />
       ))}
@@ -182,21 +183,23 @@ function QuestionIndicator({ noOfQuestions }) {
   const noMorePrev = 0 >= currentStep;
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between items-center">
       {noMorePrev ? (
         <div className="flex-1"></div>
       ) : (
         <div
-          className="flex gap-1 items-center flex-1 cursor-pointer hover:text-amber-600"
+          className="flex gap-1 sm:gap-2 items-center flex-1 cursor-pointer hover:text-amber-600 transition-colors p-2 -m-2"
           onClick={prevStep}
         >
-          <IoIosArrowBack className="size-4" />
-          <p className="text-xs">Previous</p>
+          <IoIosArrowBack className="size-4 sm:size-5" />
+          <p className="text-xs sm:text-sm font-medium">Previous</p>
         </div>
       )}
-      <p className="uppercase font-bold font-mono text-center  text-amber-400 flex-1">
+
+      <p className="uppercase font-bold font-mono text-center text-amber-400 flex-1 text-xs sm:text-sm">
         question {currentStep + 1} / {noOfQuestions}
       </p>
+
       <div className="flex-1"></div>
     </div>
   );
@@ -204,7 +207,7 @@ function QuestionIndicator({ noOfQuestions }) {
 
 function QuestionsContainer({ question }) {
   return (
-    <div className=" flex gap-8 flex-col">
+    <div className="flex gap-6 sm:gap-8 flex-col">
       <Questions questionText={question.question_text} />
       <Choices question={question} />
     </div>
@@ -213,8 +216,10 @@ function QuestionsContainer({ question }) {
 
 function Questions({ questionText }) {
   return (
-    <div className=" text-center">
-      <h2 className="text-5xl">{questionText}</h2>
+    <div className="text-center px-2">
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+        {questionText}
+      </h2>
     </div>
   );
 }
@@ -224,15 +229,15 @@ function Choices({ question }) {
     switch (question?.question_type) {
       case "single":
         return <SingleChoice key={question?.id} question={question} />;
-
       case "multi":
         return <MultiChoice key={question?.id} question={question} />;
-
       case "text":
         return <TextInput key={question?.id} question={question} />;
     }
   }
-  return <div className=" flex flex-col gap-2">{renderChoiceType()}</div>;
+  return (
+    <div className="flex flex-col gap-3 sm:gap-4">{renderChoiceType()}</div>
+  );
 }
 
 function SingleChoice({ question }) {
@@ -241,12 +246,6 @@ function SingleChoice({ question }) {
 
   const currentAnswer = answers[question.id];
   const otherText = currentAnswer?.otherText || "";
-  // const selectedChoice = currentAnswer?.choiceId;
-
-  // const selectedChoiceData = question.choices.find(
-  //   (choice) => choice.id === selectedChoice
-  // );
-  // const isOtherSelected = selectedChoiceData?.is_other === 1;
 
   function handleChoiceToggle(choice) {
     if (currentAnswer?.choiceId === choice.id) {
@@ -274,28 +273,30 @@ function SingleChoice({ question }) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 sm:gap-4">
       {question.choices.map((choice) => (
         <div key={choice?.id} className="flex flex-col gap-2">
           <div
-            className="flex items-center gap-3 bg-stone-100 py-3 px-2 rounded-2xl hover:bg-black/20 cursor-pointer transition-colors"
+            className="flex items-center gap-3 sm:gap-4 bg-stone-100 py-3 sm:py-4 px-3 sm:px-4 rounded-xl sm:rounded-2xl hover:bg-black/10 cursor-pointer transition-colors min-h-[48px] touch-manipulation"
             onClick={() => handleChoiceToggle(choice)}
           >
             <Checkbox
               checked={currentAnswer?.choiceId === choice.id}
               onChange={() => {}}
-              className="bg-white pointer-events-none"
+              className="bg-white pointer-events-none flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6"
             />
-            <p className="select-none font-medium">{choice?.choice_text}</p>
+            <p className="select-none font-medium text-sm sm:text-base leading-snug">
+              {choice?.choice_text}
+            </p>
           </div>
 
           {choice.is_other === 1 && currentAnswer?.choiceId === choice.id && (
-            <div className="ml-8 mt-2">
+            <div className="ml-4 sm:ml-8 mt-2">
               <Textarea
                 placeholder="Please specify..."
                 value={otherText}
                 onChange={handleOtherTextChange}
-                className="min-h-[80px] resize-none bg-white border-amber-200 focus:border-amber-400"
+                className="min-h-[80px] sm:min-h-[100px] resize-none bg-white border-amber-200 focus:border-amber-400 text-sm sm:text-base"
                 rows={3}
               />
             </div>
@@ -326,7 +327,6 @@ function MultiChoice({ question }) {
         choiceId: choice?.id,
         choiceText: choice?.choice_text,
       };
-
       newAnswers = [...currentAnswers, newAnswer];
     }
 
@@ -364,31 +364,32 @@ function MultiChoice({ question }) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 sm:gap-4">
       {question.choices.map((choice) => (
         <div key={choice?.id} className="flex flex-col gap-2">
           <div
-            className="flex items-center gap-3 bg-stone-100 py-3 px-2 rounded-2xl hover:bg-amber-100 cursor-pointer transition-colors"
+            className="flex items-center gap-3 sm:gap-4 bg-stone-100 py-3 sm:py-4 px-3 sm:px-4 rounded-xl sm:rounded-2xl hover:bg-amber-100 cursor-pointer transition-colors min-h-[48px] touch-manipulation"
             onClick={() => handleChoiceToggle(choice)}
           >
             <Checkbox
               checked={isChoiceSelected(choice?.id)}
               onChange={() => {}}
-              className="bg-white pointer-events-none"
+              className="bg-white pointer-events-none flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6"
             />
-            <p className="select-none">{choice?.choice_text}</p>
+            <p className="select-none text-sm sm:text-base leading-snug">
+              {choice?.choice_text}
+            </p>
           </div>
 
-          {/* ✅ Conditional textarea for "other" options */}
           {choice.is_other === 1 && isChoiceSelected(choice.id) && (
-            <div className="ml-8 mt-2">
+            <div className="ml-4 sm:ml-8 mt-2">
               <Textarea
                 placeholder="Please specify..."
                 value={getOtherText(choice.id)}
                 onChange={(e) =>
                   handleOtherTextChange(choice.id, e.target.value)
                 }
-                className="min-h-[80px] resize-none bg-white border-amber-200 focus:border-amber-400"
+                className="min-h-[80px] sm:min-h-[100px] resize-none bg-white border-amber-200 focus:border-amber-400 text-sm sm:text-base"
                 rows={3}
               />
             </div>
@@ -416,7 +417,7 @@ function TextInput({ question }) {
         placeholder="Type your answer here..."
         value={currentAnswer}
         onChange={handleTextChange}
-        className="min-h-[120px] resize-none"
+        className="min-h-[120px] sm:min-h-[140px] resize-none text-sm sm:text-base"
         rows={4}
       />
     </div>
@@ -487,22 +488,24 @@ function ActionButtons() {
   }
 
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-center sm:justify-end pt-4">
       {isLastStep ? (
         <Button
-          className="px-15 bg-green-500 hover:bg-green-400"
+          className="w-full sm:w-auto px-8 sm:px-12 py-3 bg-green-500 hover:bg-green-400 text-base font-medium"
           onClick={handleSubmit}
           disabled={isCreating}
         >
-          Submit
+          {isCreating ? "Submitting..." : "Submit Survey 🎯"}
         </Button>
       ) : (
         <Button
-          className={`px-15 ${noMoreNext && "bg-primary/80"}`}
+          className={`w-full sm:w-auto px-8 sm:px-12 py-3 text-base font-medium ${
+            noMoreNext && "bg-primary/80"
+          }`}
           disabled={noMoreNext}
           onClick={() => nextStep()}
         >
-          Next
+          Next →
         </Button>
       )}
     </div>
