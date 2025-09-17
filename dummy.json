@@ -1,0 +1,57 @@
+{
+  "userName": "Seif Mohamed",
+  "finalAnswers": [
+    {
+      "question_id": "1",
+      "answer_text": "Woman Entrepreneur"
+    },
+    {
+      "question_id": "2",
+      "answer_text": "Retail / Trade"
+    },
+    {
+      "question_id": "3",
+      "answer_text": "Weekly"
+    },
+    {
+      "question_id": "4",
+      "answer_text": [
+        "SIBA / eMaSave (group savings)",
+        "eMaClinic (telehealth)",
+        "eMaCargo (delivery/logistics)",
+        "eMaServe (services marketplace)"
+      ]
+    },
+    {
+      "question_id": "5",
+      "answer_text": ["Other:"],
+      "written_answer": "not nice"
+    },
+    {
+      "question_id": "6",
+      "answer_text": [
+        "Technical difficulties (app not easy to use)",
+        "Language barriers",
+        "Lack of training or support"
+      ]
+    },
+    {
+      "question_id": "7",
+      "answer_text": [
+        "More customers available on the platform",
+        "Lower transaction costs"
+      ]
+    },
+    {
+      "question_id": "8",
+      "answer_text": ["Training videos / mentorship"]
+    },
+    {
+      "question_id": "9",
+      "answer_text": "Yes"
+    },
+    {
+      "question_id": "10"
+    }
+  ]
+}
