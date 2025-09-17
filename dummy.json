@@ -1,9 +1,10 @@
 {
-  "userName": "Seif Mohamed",
-  "finalAnswers": [
+  "user_name": "Seif Mohamed",
+  "answers": [
     {
       "question_id": "1",
-      "answer_text": "Woman Entrepreneur"
+      "answer_text": "Other :",
+      "written_answer": "Mwazaf"
     },
     {
       "question_id": "2",
@@ -11,47 +12,56 @@
     },
     {
       "question_id": "3",
-      "answer_text": "Weekly"
+      "answer_text": "Monthly"
     },
     {
       "question_id": "4",
-      "answer_text": [
-        "SIBA / eMaSave (group savings)",
-        "eMaClinic (telehealth)",
-        "eMaCargo (delivery/logistics)",
-        "eMaServe (services marketplace)"
-      ]
+      "answer_text": "eMaFunding (crowdfunding)"
+    },
+    {
+      "question_id": "4",
+      "answer_text": "eMaMall (online shop)"
+    },
+    {
+      "question_id": "4",
+      "answer_text": "eMaServe (services marketplace)"
+    },
+    {
+      "question_id": "4",
+      "answer_text": "Other:",
+      "written_answer": "msh faker"
     },
     {
       "question_id": "5",
-      "answer_text": ["Other:"],
-      "written_answer": "not nice"
+      "answer_text": "Lack of trust / security concerns"
     },
     {
       "question_id": "6",
-      "answer_text": [
-        "Technical difficulties (app not easy to use)",
-        "Language barriers",
-        "Lack of training or support"
-      ]
+      "answer_text": "Language barriers"
     },
     {
       "question_id": "7",
-      "answer_text": [
-        "More customers available on the platform",
-        "Lower transaction costs"
-      ]
+      "answer_text": "More training on how to use it for business"
+    },
+    {
+      "question_id": "7",
+      "answer_text": "More customers available on the platform"
+    },
+    {
+      "question_id": "7",
+      "answer_text": "Easier access to loans or funding"
     },
     {
       "question_id": "8",
-      "answer_text": ["Training videos / mentorship"]
+      "answer_text": "Easier cross-border trade tools"
     },
     {
       "question_id": "9",
       "answer_text": "Yes"
     },
     {
-      "question_id": "10"
+      "question_id": "10",
+      "answer_text": "Gamed"
     }
   ]
 }

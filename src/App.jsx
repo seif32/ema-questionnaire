@@ -16,10 +16,16 @@ const queryClient = new QueryClient();
 
 function App() {
   const isBeginSurvey = useSurveyStore((state) => state.isBeginSurvey);
+  const isSubmitSurvey = useSurveyStore((state) => state.isSubmitSurvey);
   return (
     <QueryClientProvider client={queryClient}>
       <main className=" min-h-screen grid place-items-center">
-        {isBeginSurvey ? <SurveyContainer /> : <SetName />}
+        {isBeginSurvey && !isSubmitSurvey ? (
+          <SurveyContainer />
+        ) : (
+          !isSubmitSurvey && <SetName />
+        )}
+        {isSubmitSurvey && <SuccessSubmitSurvey />}
       </main>
       <Toaster position="top-center" />
     </QueryClientProvider>
@@ -27,6 +33,53 @@ function App() {
 }
 
 export default App;
+
+function SuccessSubmitSurvey() {
+  return (
+    <div className="max-w-md mx-auto text-center p-8 bg-white rounded-3xl shadow-lg border border-gray-100">
+      {/* Success Icon */}
+      <div className="mb-6">
+        <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+          <svg
+            className="w-10 h-10 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Success Message */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">Thank You! </h2>
+        <p className="text-gray-600 leading-relaxed">
+          Your survey has been submitted successfully. We appreciate you taking
+          the time to share your valuable feedback with us.
+        </p>
+      </div>
+
+      {/* Action Button
+      <button
+        onClick={resetSurvey}
+        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-200"
+      >
+        Take Another Survey ✨
+      </button> */}
+
+      {/* Optional: Additional Info */}
+      <p className="text-sm text-gray-500 mt-6">
+        Your responses will help us improve our services
+      </p>
+    </div>
+  );
+}
 
 function SetName() {
   const userName = useSurveyStore((state) => state.userName);
@@ -40,13 +93,13 @@ function SetName() {
 
   return (
     <div className="space-y-3 flex flex-col">
-      <div className="w-100 self-center justify-self-center">
+      {/* <div className="w-100 self-center justify-self-center">
         <img
           src={Smile}
           alt="smile-face"
           className="object-fill w-full h-full"
         />
-      </div>
+      </div> */}
       <div>
         <h2 className="text-muted-foreground">Hello our dear!</h2>
         <h1 className="text-4xl">
@@ -376,6 +429,7 @@ function ActionButtons() {
   const currentStep = useSurveyStore((state) => state.currentStep);
   const userName = useSurveyStore((state) => state.userName);
   const answers = useSurveyStore((state) => state.answers);
+  const setIsSubmitSurvey = useSurveyStore((state) => state.setIsSubmitSurvey);
 
   const { createResponse, isCreating } = useSurvey();
 
@@ -389,25 +443,30 @@ function ActionButtons() {
     const validation = validateAnswers(questions);
 
     if (validation.isComplete) {
-      const finalAnswers = Object.entries(answers).map(([key, value]) => {
-        const answerText = Array.isArray(value)
-          ? value.map((v) => v.choiceText)
-          : value.choiceText;
-
-        const writtenAnswer = Array.isArray(value)
-          ? value.find((v) => v.otherText)?.otherText
-          : value.otherText;
-
-        return {
-          question_id: key,
-          answer_text: answerText,
-          ...(writtenAnswer && { written_answer: writtenAnswer }),
-        };
+      const finalAnswers = Object.entries(answers).flatMap(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.map((v) => ({
+            question_id: key,
+            answer_text: v.choiceText,
+            ...(v.otherText && { written_answer: v.otherText }),
+          }));
+        } else {
+          return {
+            question_id: key,
+            answer_text: value.choiceText || value,
+            ...(value.otherText && { written_answer: value.otherText }),
+          };
+        }
       });
 
       const data = { user_name: userName, answers: finalAnswers };
+      console.log("App", data);
 
-      createResponse(data);
+      createResponse(data, {
+        onSuccess: () => {
+          setIsSubmitSurvey(true);
+        },
+      });
 
       toast.success("Survey Completed!", {
         description: "All questions answered successfully! 🎉",

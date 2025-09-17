@@ -6,7 +6,9 @@ export const useSurveyStore = create((set, get) => ({
   totalSteps: 0,
   userName: "",
   isBeginSurvey: false,
+  isSubmitSurvey: false,
 
+  setIsSubmitSurvey: (bool) => set((state) => ({ isSubmitSurvey: bool })),
   setIsBeginSurvey: (bool) => set((state) => ({ isBeginSurvey: bool })),
   setUserName: (name) => set((state) => ({ userName: name })),
   setAnswer: (questionId, value) => {
